@@ -8,11 +8,13 @@
         v-for="(value, key) in data[0]"
         :key="key"
         :data-structure="value"
+        v-model="data"
         :path="[key]"
+        :activeRow="changingElementIndex"
       />
       <el-table-column
         fixed="right"
-        width="100"
+        width="110"
       >
         <template slot-scope="scope">
           <div :class="$style.controls">
@@ -38,15 +40,17 @@
 
 <script>
 import {data as pd} from './test-data.json';
-import RecursiveColumn from '@/components/RecursiveElTableColumn/index.vue';
+import RecursiveColumn from '@/components/PersonalData/RecursiveElTableColumn/index.vue';
 
 export default {
+  name: 'Table',
   components: {RecursiveColumn},
   data() {
     return {
       data: pd,
       changingElementIndex: -1,
       infoBackUp: null,
+      sct: {}
     }
   },
   methods: {
@@ -81,6 +85,10 @@ export default {
       console.log('vaval:',val)
       console.log('i:', i)
       return 'qwert'
+    },
+    test(e) {
+      console.log(e)
+      this.$emit('value-input', e)
     }
   },
   filters: {
