@@ -122,6 +122,18 @@ export const constantRoutes = [
       },
     ],
   },
+  {
+    path: '/personal-data/',
+    component: Layout,
+    children: [
+      {
+        path: '',
+        name: 'personal-data',
+        component: () => import('@/views/PersonalData'),
+        meta: {title: 'Данные о студентах', icon: ''}
+      },
+    ],
+  },
 
   // {
   //   path: '/mtc_referencebook',
