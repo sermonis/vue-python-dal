@@ -1,64 +1,15 @@
 <template>
   <div :class="$style.root">
-    <!-- <table :class="$style.studentsTabel">
-      <thead>
-        <tr :class="$style.studentsTabelHead">
-          <td :class="$style.studentsTabelHeadItem">Фамилия</td>
-          <td :class="$style.studentsTabelHeadItem">Имя</td>
-          <td :class="$style.studentsTabelHeadItem">Отчество</td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="({
-            fullName,
-            id,
-          }, index) in data"
-          :key="id"
-          :class="$style.student"
-        >
-          <td
-            v-for="(value, key) in fullName"
-            :key="key"
-            :class="$style.studentNameInputWrapper"
-          >
-            <component
-              :is="index === changingElementIndex ? 'el-input' : 'span'"
-              ::class="$style.index === changingElementIndex ? 'studentNameInput' : 'studentNameSpan'"
-              v-model="fullName[key]"
-              minlength="1"
-            >
-              {{value}}
-              <i
-                v-if="index === changingElementIndex"
-                :class="$style.el-icon-refresh el-input__icon"
-                slot="suffix"
-                @click="abortChangeInfoField(index, 'fullName', key)">
-              </i>
-            </component>
-          </td>
-          <td :class="$style.controls">
-            <el-button
-              :type="changingElementIndex === index ? 'success' : 'primary'"
-              :icon="changingElementIndex === index ? 'el-icon-check' : 'el-icon-edit'"
-              circle
-              @click="changingElementIndex === index ? commitChangeInfoSingle() : startChangeInfoSingle(index)"
-            />
-            <el-button
-              type="danger"
-              icon="el-icon-delete"
-              circle
-              v-if="changingElementIndex === index"
-              @click="abortChangeInfoSingle(index)"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table> -->
     <el-table
       :data="data"
       height="90vh"
     >
+      <RecursiveColumn
+        v-for="(value, key) in data[0]"
+        :key="key"
+        :data-structure="value"
+        :path="[key]"
+      />
       <el-table-column
         fixed="right"
         width="100"
@@ -81,7 +32,6 @@
           </div>
         </template>
       </el-table-column>
-      <RecursiveColumn :data-structure="data[0]" :data="data" />
     </el-table>
   </div>
 </template>

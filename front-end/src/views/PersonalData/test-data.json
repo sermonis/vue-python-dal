@@ -1,11 +1,8 @@
 {
   "data": [
     {
-      "fix": {
-        "value": "",
-        "columnName": " "
-      },
       "fullName": {
+        "columnName": "ФИО",
         "secondName": {
           "value": "Ivanov",
           "columnName": "Фамилия"
@@ -24,6 +21,7 @@
         "columnName": "День рождения"
       },
       "motherFullName": {
+        "columnName": "ФИО матери",
         "secondName": {
           "value": "Ivanov",
           "columnName": "Фамилия матери"
@@ -38,6 +36,7 @@
         }
       },
       "fatherFullName": {
+        "columnName": "ФИО отца",
         "secondName": {
           "value": "Ivanov",
           "columnName": "Фамилия отца"
@@ -53,11 +52,8 @@
       }
     },
     {
-      "fix": {
-        "value": "",
-        "columnName": " "
-      },
       "fullName": {
+        "columnName": "ФИО",
         "secondName": {
           "value": "Ivanov",
           "columnName": "Фамилия"

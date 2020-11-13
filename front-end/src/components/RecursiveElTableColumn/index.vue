@@ -1,29 +1,17 @@
 <template>
-  <div>
-    <template v-for="key in keys">
-      <template v-if="dataStructure[key].columnName">
-        <el-table-column
-          :key="key"
-          :label="dataStructure[key].columnName"
-          :width="key === 'fix' ? 0 : null"
-        >
-          <template slot-scope="scope">
-            <el-input
-              v-model="getValue(scope)[key].value"
-            />
-          </template>
-        </el-table-column>
-      </template>
-      <template v-else>
-        <RecursiveElTableColumn
-          :key="key"
-          :data-structure="dataStructure[key]"
-          :data="data"
-          :path="[...path, key]"
-        />
-      </template>
-    </template>
-  </div>
+  <el-table-column
+    :label="dataStructure.columnName"
+  >
+    <div v-if="dataStructure.value || dataStructure.value === ''" slot-scope="scope">
+      <el-input v-model="getValue(scope).value"/>
+    </div>
+    <RecursiveElTableColumn
+      v-for="(value, key) in nextData"
+      :data-structure="value"
+      :key="key"
+      :path="[...path, key]"
+    />
+  </el-table-column>
 </template>
 
 <script>
@@ -34,26 +22,19 @@ export default {
       type: Object,
       default: () => ({})
     },
-    data: {
-      type: [Object, Array],
-      default: () => ({})
-    },
     path: {
       type: Array,
       default: () => []
-    },
+    }
   },
   computed: {
-    keys() {
-      return Object.keys(this.dataStructure)
+    nextData() {
+      return this.lodash.omit(this.dataStructure, ['columnName', 'value'])
     }
   },
   methods: {
-    isObj(obj) {
-      return this.lodash.isPlainObject(obj)
-    },
     getValue(scope) {
-      return this.path.reduce((memo, key) => memo[key], this.data[scope.$index])
+      return this.path.reduce((memo, key) => memo[key], scope.row)
     }
   }
 }
