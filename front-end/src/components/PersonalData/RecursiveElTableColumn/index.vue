@@ -4,20 +4,19 @@
     width="150px"
   >
     <TableInput
-      v-if="dataStructure.value || dataStructure.value === ''"
+      v-if="needInput"
       slot-scope="scope"
       :scope-data="scope"
-      :data="data"
       :activeRow="activeRow"
       :path="path"
+      @change-value="onChangeValue($event)"
     />
     <RecursiveElTableColumn
       v-for="(value, key) in nextData"
       :data-structure="value"
-      :key="key"
+      :key="`${path.join('-')}-${key}`"
       :path="[...path, key]"
       :activeRow="activeRow"
-      :data="data"
       @change-value="onChangeValue($event)"
     />
   </el-table-column>
@@ -31,18 +30,10 @@ export default {
     TableInput
   },
   name: 'RecursiveElTableColumn',
-  model: {
-    prop: 'data',
-    event: 'change-value'
-  },
   props: {
     dataStructure: {
       type: Object,
       default: () => ({})
-    },
-    data: {
-      type: Array,
-      default: () => []
     },
     path: {
       type: Array,
@@ -56,6 +47,9 @@ export default {
   computed: {
     nextData() {
       return this.lodash.omit(this.dataStructure, ['columnName', 'value'])
+    },
+    needInput() {
+      return !Object.keys(this.nextData).length
     }
   },
   methods: {

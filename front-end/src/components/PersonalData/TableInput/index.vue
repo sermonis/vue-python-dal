@@ -1,26 +1,23 @@
 <template>
   <el-input
-    v-model="field.value"
+    v-model="value"
     :disabled="!isActive"
-    @change="onInput($event)"
   >
     <i
       v-if="isActive"
       class="el-icon-refresh el-input__icon"
       slot="suffix"
-      @click="field.value = savedValue"
+      @click="value = savedValue"
     >
     </i>
   </el-input>
 </template>
 
 <script>
+import { STATES } from '@/constants/personalData'
+
 export default {
   name: 'TableInput',
-  model: {
-    prop: 'data',
-    event: 'change-value'
-  },
   props: {
     scopeData: {
       type: Object,
@@ -30,10 +27,6 @@ export default {
       type: Number,
       default: -1
     },
-    data: {
-      type: Array,
-      default: () => []
-    },
     path: {
       type: Array,
       default: () => []
@@ -41,30 +34,35 @@ export default {
   },
   data() {
     return {
-      savedValue: ''
+      value: '',
     }
   },
   created() {
-    this.savedValue = this.field.value
+    this.value = this.savedValue
   },
   computed: {
     isActive() {
       return this.scopeData.$index === this.activeRow
     },
-    field() {
-      return this.path.reduce((memo, key) => memo[key], this.data[this.scopeData.$index])
-    }
-  },
-  methods: {
-    onInput() {
-      this.$emit('change-value', this.data)
+    savedValue() {
+      return this.lodash.get(this.scopeData.row, this.path, {value: ''}).value
     }
   },
   watch: {
-    activeRow: function(prevValue, nextValue) {
+    isActive(nextValue, prevValue) {
       if (prevValue && !nextValue) {
-        this.savedValue = this.field.value
+        if (this.activeRow === STATES.success) {
+          this.$emit('change-value', {
+            value: this.value,
+            path: [this.scopeData.$index, ...this.path]
+          })
+        } else {
+          this.value = this.savedValue
+        }
       }
+    },
+    savedValue(nextValue) {
+      this.value = nextValue
     }
   }
 }
