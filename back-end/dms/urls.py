@@ -18,11 +18,8 @@ from dms.views.class_materials import (
     TopicOrderUpdateAPIView,
     ClassMaterialViewSet,
 )
-from dms.views.common import (
-    AuthorViewSet,
-    PublisherViewSet,
-    SubjectViewSet,
-)
+from dms.views.common import (AuthorViewSet, PublisherViewSet, SubjectViewSet,
+                              StatisticsAPIView)
 
 router = routers.DefaultRouter()
 router.register("authors", AuthorViewSet)
@@ -42,6 +39,9 @@ urlpatterns = [
     # Ordering
     path("sections/<int:id>/order/", SectionOrderUpdateAPIView.as_view()),
     path("topics/<int:id>/order/", TopicOrderUpdateAPIView.as_view()),
+
+    # Statistics
+    path("statistics/<int:uid>/", StatisticsAPIView.as_view()),
 
     # Manual urls
     path("tags/", TagListAPIView.as_view()),
